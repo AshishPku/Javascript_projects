@@ -4,17 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     <div class="calculator-grid">
         <div class="output">
-          <div data-previous-operand id="akp1" class="previous-operand"></div>
-          <div data-current-operand class="current-operand"></div>
+          <div id="display1"></div>
+          <div id="display2"></div>
         </div>
         
-        <button data-all-clear class="span-two">AC</button>
-        <button data-delete>DEL</button>
-        <button data-operation>÷</button>
+        <button id="AC" onclick="clearDisplay()" class="span-two">AC</button>
+        <button id="DEL" onclick="delByone()">DEL</button>
+        <button data-operation>/</button>
         <button data-number>1</button>
         <button data-number>2</button>
         <button data-number>3</button>
@@ -29,22 +30,66 @@
         <button data-operation>-</button>
         <button data-number>.</button>
         <button data-number>0</button>
-        <button data-equals class="span-two">=</button>
+        <button data-equals class="span-two" onclick="Calculate()">=</button>
       </div>
       <script>
-        var numb;
-        const numberButtons = document.querySelectorAll("[data-number]");
-        numberButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    numb.
-    document.getElementById("akp1").innerHTML=button.innerText;
-  });
-
-});
-        const operationButtons = document.querySelectorAll("[data-operation]");
-        const equalsButton = document.querySelector("[data-equals]");
-        const deleteButton = document.querySelector("[data-delete]");
-        const allClearButton = document.querySelector("[data-all-clear]");
+        let num1="";
+        let num2="";
+        let operand="";
+        const numButton=document.querySelectorAll("[data-number]");
+        const operator=document.querySelectorAll("[data-operation]");
+        numButton.forEach(button =>{
+          button.addEventListener("click",() => {
+            if(operand===""){
+            document.getElementById("display1").innerHTML="";
+            num1+=button.innerHTML;
+            document.getElementById("display2").innerHTML=num1;
+            }else{
+              num2+=button.innerHTML;
+              document.getElementById("display1").innerHTML=num1+operand;
+              document.getElementById("display2").innerHTML=num2;
+            }
+          })
+        });
+        operator.forEach(button =>{
+          button.addEventListener("click",() => {
+            operand=button.innerHTML;
+            document.getElementById("display2").innerHTML=num1+operand;
+          })
+        });
+        function Calculate(){
+          num1+=operand + num2;
+          let ans=eval(num1);
+          document.getElementById("display1").innerHTML=num1;
+          document.getElementById("display2").innerHTML="="+ans;
+          console.log(num1);
+          num1="";
+          operand="";
+          num2="";
+        }
+        function clearDisplay(){
+          document.getElementById("display1").innerHTML="";
+          document.getElementById("display2").innerHTML="";
+          num1="";
+          operand="";
+          num2="";
+        }
+        function delByone(){
+          if(operand==""){
+            if(num1==""){
+              //doing nothing
+            }else{
+              num1 = num1.slice(0,num1.length-1);
+              document.getElementById("display2").innerHTML=num1;
+            }
+          }else if(num2==""){
+                operand="";
+                document.getElementById("display2").innerHTML=num1;
+          }else{
+            num2 = num2.slice(0,num2.length-1);
+            document.getElementById("display2").innerHTML=num2;
+          }
+        }
       </script>
 </body>
 </html>
